@@ -137,6 +137,15 @@ def scan_line(line: str) -> Generator[PotentialSecret, None, None]:
     )
 
 
+def scan_content(content: str, filename: str) -> Generator[PotentialSecret, None, None]:
+    lines = content.splitlines()
+
+    for secret in _process_line_based_plugins(
+            lines=list(enumerate(lines, start=1)),
+            filename=filename,
+    ):
+        yield secret
+
 def scan_file(filename: str) -> Generator[PotentialSecret, None, None]:
     try:
         if not get_plugins():   # pragma: no cover
