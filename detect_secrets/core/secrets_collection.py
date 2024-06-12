@@ -72,6 +72,10 @@ class SecretsCollection:
                 for secret in secrets:
                     self[os.path.relpath(secret.filename, self.root)].add(secret)
 
+    def scan_content(self, content: str, filename: str):
+        for secret in scan.scan_content(content, filename):
+            self[convert_local_os_path(filename)].add(secret)
+
     def scan_file(self, filename: str) -> None:
         for secret in scan.scan_file(os.path.join(self.root, convert_local_os_path(filename))):
             self[convert_local_os_path(filename)].add(secret)
